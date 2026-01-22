@@ -22,9 +22,9 @@
   <properties>
     <!-- indentation is intentionally broken -->
     <changelist>-SNAPSHOT</changelist>
-    <java.version>11</java.version>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
+    <java.version>17</java.version>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <revision>0.0.1</revision>
@@ -103,7 +103,7 @@
               <goal>jar</goal>
             </goals>
             <configuration>
-              <source>11</source>
+              <source>17</source>
             </configuration>
           </execution>
         </executions>
@@ -125,7 +125,7 @@
                   <version>3.2.5</version>
                 </requireMavenVersion>
                 <requireJavaVersion>
-                  <version>[11,12)</version>
+                  <version>[17,18)</version>
                 </requireJavaVersion>
                 <banDynamicVersions></banDynamicVersions>
                 <requirePluginVersions>
@@ -456,6 +456,47 @@
                 </module>
               </checkstyleRules>
             </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <!-- Version 4.9.x.x series requires java 11+ -->
+        <version>4.9.4.1</version>
+        <configuration>
+          <!-- Default configuration -->
+          <xmlOutput>true</xmlOutput>
+          <effort>Max</effort>
+          <failThreshold>Low</failThreshold>
+          <failOnError>true</failOnError>
+          <includeTests>true</includeTests>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <phase>test</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.12</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>report</id>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <phase>prepare-package</phase>
           </execution>
         </executions>
       </plugin>
