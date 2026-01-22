@@ -47,5 +47,5 @@ package com.teragrep.poj_01;
 
 public interface Stubable {
 
-    boolean isStub();
+    public abstract boolean isStub();
 }
