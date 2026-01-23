@@ -132,7 +132,7 @@ public class Pool<T extends Poolable> implements AutoCloseable, Supplier<T> {
     public void close() {
         close.set(true);
 
-        // close all that are in the com.teragrep.poj_01.pool right now
+        // close all that are in the Pool right now
         offer(stub);
     }
 }
