@@ -16,13 +16,17 @@
  */
 package com.teragrep.poj_01.pool;
 
-import java.util.function.Supplier;
+import java.io.IOException;
 
-public interface Pool<T extends Poolable> extends AutoCloseable, Supplier<T> {
+final class PoolableFake implements Poolable {
 
-    public abstract T get();
+    @Override
+    public boolean isStub() {
+        return false;
+    }
 
-    public abstract void offer(T object);
-
-    public abstract void close();
+    @Override
+    public void close() throws IOException {
+        // no-op
+    }
 }

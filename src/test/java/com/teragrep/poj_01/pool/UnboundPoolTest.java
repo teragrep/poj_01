@@ -14,18 +14,45 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.teragrep.poj_01;
+package com.teragrep.poj_01.pool;
 
-import com.teragrep.poj_01.pool.Pool;
-import com.teragrep.poj_01.pool.Poolable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-final class PoolTest {
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.atomic.AtomicLong;
+
+final class UnboundPoolTest {
+
+    @Test
+    public void testUnboundPool() {
+        AtomicLong report = new AtomicLong();
+
+        Pool<CountingPoolable> pool = new UnboundPool<>(() -> new CountingPoolableFake(report), new PoolableStub());
+
+        final int testCycles = 1_000_000;
+        CountDownLatch countDownLatch = new CountDownLatch(testCycles);
+
+        for (int i = 0; i < testCycles; i++) {
+            ForkJoinPool.commonPool().submit(() -> {
+                CountingPoolable testPoolable = pool.get();
+                testPoolable.increment();
+                pool.offer(testPoolable);
+                countDownLatch.countDown();
+            });
+        }
+
+        Assertions.assertAll(countDownLatch::await);
+
+        pool.close();
+
+        Assertions.assertEquals(testCycles, report.get());
+    }
 
     @Test
     void testEmptyPool() {
-        final Pool<Poolable> pool = new Pool<>(PoolableFake::new, new PoolableStub());
+        final Pool<Poolable> pool = new UnboundPool<>(PoolableFake::new, new PoolableStub());
 
         final Poolable poolable = pool.get();
         pool.offer(poolable);
@@ -46,7 +73,7 @@ final class PoolTest {
 
     @Test
     void testClosedPool() {
-        final Pool<Poolable> pool = new Pool<>(PoolableFake::new, new PoolableStub());
+        final Pool<Poolable> pool = new UnboundPool<>(PoolableFake::new, new PoolableStub());
         pool.close();
 
         final Poolable poolable = pool.get();
