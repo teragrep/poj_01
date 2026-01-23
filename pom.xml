@@ -10,8 +10,8 @@
   <url>https://teragrep.com</url>
   <licenses>
     <license>
-      <name>GNU Affero General Public License v3.0</name>
-      <url>http://github.com/teragrep/teragrep/blob/main/LICENSE</url>
+      <name>Apache License v2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
     </license>
   </licenses>
   <scm>
@@ -201,7 +201,7 @@
           <families>
             <family>
               <id>Teragrep</id>
-              <name>Affero General Public License v3</name>
+              <name>Apache License v2.0</name>
             </family>
           </families>
           <licenses>
