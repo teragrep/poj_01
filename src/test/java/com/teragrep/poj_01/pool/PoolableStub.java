@@ -14,3 +14,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.teragrep.poj_01.pool;
+
+import java.io.IOException;
+
+final class PoolableStub implements CountingPoolable {
+
+    @Override
+    public boolean isStub() {
+        return true;
+    }
+
+    @Override
+    public void close() throws IOException {
+        throw new UnsupportedOperationException("close() is not provided by PoolableStub");
+    }
+
+    @Override
+    public void increment() {
+        throw new UnsupportedOperationException("increment() is not provided by PoolableStub");
+    }
+}

@@ -14,3 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.teragrep.poj_01.pool;
+
+import java.io.IOException;
+
+final class PoolableFake implements Poolable {
+
+    @Override
+    public boolean isStub() {
+        return false;
+    }
+
+    @Override
+    public void close() throws IOException {
+        // no-op
+    }
+}
