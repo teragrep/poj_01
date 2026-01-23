@@ -45,9 +45,6 @@
  */
 package com.teragrep.poj_01.pool;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -56,8 +53,6 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Supplier;
 
 public class Pool<T extends Poolable> implements AutoCloseable, Supplier<T> {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(Pool.class);
 
     private final Supplier<T> supplier;
 
@@ -107,16 +102,10 @@ public class Pool<T extends Poolable> implements AutoCloseable, Supplier<T> {
                         }
                         else {
                             try {
-                                LOGGER.debug("Closing poolable <{}>", pooled);
                                 pooled.close();
-                                LOGGER.debug("Closed poolable <{}>", pooled);
                             }
-                            catch (IOException exception) {
-                                LOGGER
-                                        .warn(
-                                                "Exception <{}> while closing poolable <{}>", exception.getMessage(),
-                                                pooled
-                                        );
+                            catch (IOException ignored) {
+                                // closing Poolable failed
                             }
                         }
                     }

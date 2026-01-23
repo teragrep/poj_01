@@ -22,10 +22,10 @@
   <properties>
     <!-- indentation is intentionally broken -->
     <changelist>-SNAPSHOT</changelist>
-    <java.version>17</java.version>
+    <java.version>1.8</java.version>
     <junit.jupiter.version>5.7.1</junit.jupiter.version>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <revision>0.0.1</revision>
@@ -36,18 +36,6 @@
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
       <version>${junit.jupiter.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <!-- slf4j -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>2.0.6</version>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <version>2.0.6</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -110,7 +98,7 @@
               <goal>jar</goal>
             </goals>
             <configuration>
-              <source>17</source>
+              <source>8</source>
             </configuration>
           </execution>
         </executions>
@@ -132,7 +120,7 @@
                   <version>3.2.5</version>
                 </requireMavenVersion>
                 <requireJavaVersion>
-                  <version>[17,18)</version>
+                  <version>[1.8,1.9)</version>
                 </requireJavaVersion>
                 <banDynamicVersions></banDynamicVersions>
                 <requirePluginVersions>
@@ -469,8 +457,8 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <!-- Version 4.9.x.x series requires java 11+ -->
-        <version>4.9.4.1</version>
+        <!-- Version 4.8.6.6 is currently last java 8 compatible release -->
+        <version>4.8.6.6</version>
         <configuration>
           <!-- Default configuration -->
           <xmlOutput>true</xmlOutput>
