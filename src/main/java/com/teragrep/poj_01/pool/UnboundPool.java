@@ -21,9 +21,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class UnboundPool<T extends Poolable> implements Pool<T> {
+public class UnboundPool<R extends com.teragrep.poj_01.pool.Pool<T>, T extends Poolable> implements com.teragrep.poj_01.pool.Pool<T> {
 
-    private final PoolableSupplier<T> poolableSupplier;
+    private final PoolableSupplier<R, T> poolableSupplier;
 
     private final ConcurrentLinkedQueue<T> queue;
 
@@ -33,7 +33,7 @@ public class UnboundPool<T extends Poolable> implements Pool<T> {
 
     private final AtomicBoolean close;
 
-    public UnboundPool(final PoolableSupplier<T> poolableSupplier, T stub) {
+    public UnboundPool(final PoolableSupplier<R, T> poolableSupplier, T stub) {
         this.poolableSupplier = poolableSupplier;
         this.queue = new ConcurrentLinkedQueue<>();
         this.stub = stub;
@@ -50,7 +50,7 @@ public class UnboundPool<T extends Poolable> implements Pool<T> {
             // get or create
             object = queue.poll();
             if (object == null) {
-                object = poolableSupplier.get();
+                object = poolableSupplier.apply((R)this);
             }
         }
 

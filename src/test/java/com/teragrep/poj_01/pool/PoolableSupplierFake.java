@@ -17,15 +17,15 @@
 package com.teragrep.poj_01.pool;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
-final class PoolableSupplierFake<T extends Poolable> implements PoolableSupplier<T> {
+final class PoolableSupplierFake<R, T> implements PoolableSupplier<R, T> {
 
-    private final Supplier<T> supplier;
+    private final Function<R, T> supplyFunction;
     private final Consumer<T> deallocConsumer;
 
-    PoolableSupplierFake(final Supplier<T> supplier, final Consumer<T> deallocConsumer) {
-        this.supplier = supplier;
+    PoolableSupplierFake(final Function<R, T> supplyFunction, final Consumer<T> deallocConsumer) {
+        this.supplyFunction = supplyFunction;
         this.deallocConsumer = deallocConsumer;
     }
 
@@ -40,7 +40,7 @@ final class PoolableSupplierFake<T extends Poolable> implements PoolableSupplier
     }
 
     @Override
-    public T get() {
-        return supplier.get();
+    public T apply(final R r) {
+        return supplyFunction.apply(r);
     }
 }

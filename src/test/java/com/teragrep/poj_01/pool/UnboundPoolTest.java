@@ -30,7 +30,7 @@ final class UnboundPoolTest {
         AtomicLong report = new AtomicLong();
 
         Pool<CountingPoolable> pool = new UnboundPool<>(
-                new PoolableSupplierFake<>(() -> new CountingPoolableFake(report), (p) -> Assertions.assertDoesNotThrow(p::close)), new PoolableStub()
+                new PoolableSupplierFake<>((p) -> new CountingPoolableFake(report), (p) -> Assertions.assertDoesNotThrow(p::close)), new PoolableStub()
         );
 
         final int testCycles = 1_000_000;
@@ -55,7 +55,7 @@ final class UnboundPoolTest {
     @Test
     void testEmptyPool() {
         final Pool<Poolable> pool = new UnboundPool<>(
-                new PoolableSupplierFake<>(PoolableFake::new, (p) -> Assertions.assertDoesNotThrow(p::close)),
+                new PoolableSupplierFake<>((p)->new PoolableFake(), (p) -> Assertions.assertDoesNotThrow(p::close)),
                 new PoolableStub()
         );
 
@@ -79,12 +79,27 @@ final class UnboundPoolTest {
     @Test
     void testClosedPool() {
         final Pool<Poolable> pool = new UnboundPool<>(
-                new PoolableSupplierFake<>(PoolableFake::new, (p) -> Assertions.assertDoesNotThrow(p::close)),
+                new PoolableSupplierFake<>((p)->new PoolableFake(), (p) -> Assertions.assertDoesNotThrow(p::close)),
                 new PoolableStub()
         );
         pool.close();
 
         final Poolable poolable = pool.get();
         Assertions.assertTrue(poolable.isStub());
+    }
+
+    @Test
+    void testPoolReference() {
+        final Pool<Poolable> pool = new UnboundPool<>(
+                new PoolableSupplierFake<>(ReturnablePoolableFake::new, (p) -> Assertions.assertDoesNotThrow(p::close)),
+                new PoolableStub()
+        );
+
+        final Poolable poolable = pool.get();
+        Assertions.assertDoesNotThrow(poolable::close);
+
+        // Same poolable should be in the pool now
+        final Poolable poolable2 = pool.get();
+        Assertions.assertEquals(poolable, poolable2);
     }
 }
