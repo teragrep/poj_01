@@ -55,7 +55,7 @@ final class UnboundPoolTest {
     @Test
     void testEmptyPool() {
         final Pool<Poolable> pool = new UnboundPool<>(
-                new PoolableSupplierFake<>((p)->new PoolableFake(), (p) -> Assertions.assertDoesNotThrow(p::close)),
+                new PoolableSupplierFake<>((p) -> new PoolableFake(), (p) -> Assertions.assertDoesNotThrow(p::close)),
                 new PoolableStub()
         );
 
@@ -79,7 +79,7 @@ final class UnboundPoolTest {
     @Test
     void testClosedPool() {
         final Pool<Poolable> pool = new UnboundPool<>(
-                new PoolableSupplierFake<>((p)->new PoolableFake(), (p) -> Assertions.assertDoesNotThrow(p::close)),
+                new PoolableSupplierFake<>((p) -> new PoolableFake(), (p) -> Assertions.assertDoesNotThrow(p::close)),
                 new PoolableStub()
         );
         pool.close();
@@ -100,6 +100,6 @@ final class UnboundPoolTest {
 
         // Same poolable should be in the pool now
         final Poolable poolable2 = pool.get();
-        Assertions.assertEquals(poolable, poolable2);
+        Assertions.assertSame(poolable, poolable2);
     }
 }

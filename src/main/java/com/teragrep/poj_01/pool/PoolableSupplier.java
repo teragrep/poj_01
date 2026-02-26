@@ -19,5 +19,6 @@ package com.teragrep.poj_01.pool;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public interface PoolableSupplier<PoolRef, PoolableType> extends Function<PoolRef, PoolableType>, Consumer<PoolableType>, AutoCloseable {
+public interface PoolableSupplier<PoolRef, PoolableType>
+        extends Function<PoolRef, PoolableType>, Consumer<PoolableType>, AutoCloseable {
 }
