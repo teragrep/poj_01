@@ -16,20 +16,31 @@
  */
 package com.teragrep.poj_01.pool;
 
-final class PoolableStub implements CountingPoolable {
+import java.util.function.Consumer;
+import java.util.function.Function;
 
-    @Override
-    public boolean isStub() {
-        return true;
+final class PoolableSupplierFake<R, T> implements PoolableSupplier<R, T> {
+
+    private final Function<R, T> supplyFunction;
+    private final Consumer<T> deallocConsumer;
+
+    PoolableSupplierFake(final Function<R, T> supplyFunction, final Consumer<T> deallocConsumer) {
+        this.supplyFunction = supplyFunction;
+        this.deallocConsumer = deallocConsumer;
     }
 
     @Override
     public void close() {
-        throw new UnsupportedOperationException("close() is not provided by PoolableStub");
+        // no-op
     }
 
     @Override
-    public void increment() {
-        throw new UnsupportedOperationException("increment() is not provided by PoolableStub");
+    public void accept(final T poolable) {
+        deallocConsumer.accept(poolable);
+    }
+
+    @Override
+    public T apply(final R r) {
+        return supplyFunction.apply(r);
     }
 }

@@ -7,23 +7,63 @@
 
 // Add a short description of your project. Tell what your project does and what it's used for.
 
-This is a template repository for Teragrep organization.
+This library is designed to allow reusing resources  using a Pool. The Pool can be initialized with a Supplier, that supplies the resource. The supplier is used to create a new resource, if there
+are no available resources already in the Pool.
+This is useful especially in memory structures, such as MemorySegments or network connections.
 
 == Features
 
 // List your project's features
+* Poolable interface, to be implemented by the reusable resource object.
+* Pool interface, which is implemented by the included UnboundPool.
+* PoolableSupplier, which is to be implemented by the resource supplier.
+** The supplier contains the `void accept(T)` and `T apply( R)` methods provided by Java Function and Consumer interfaces. The accept() function is to be used when the
+Pool is closing to free or deallocate any of the resources in use by the Poolable. The apply() function is used to supply the new resource, and it also provides a reference
+to the Pool, which called the function.
 
 == Documentation
 
 See the official documentation on https://docs.teragrep.com[docs.teragrep.com].
 
-== Limitations
+== How to compile
 
-// If your project has limitations, please list them. Otherwise remove this section.
+The project can be compiled using Maven and Java 8+ version.
 
-== How to [compile/use/implement]
+[source,bash]
+----
+JAVA_HOME=/usr/lib/jvm/temurin-8-jdk mvn clean package
+----
+== How to use
 
-// add instructions how people can start to use your project
+* Create a Supplier implementing the PoolableSupplier interface.
+* Create a Poolable with an implementation and a stub object.
+* Initialize the pool using the created objects.
+* You can get new Poolables or recycled Poolables from the Pool with the get() method.
+* Try-with-resources can be used to automatically close the resources.
+* See example below.
+
+[source,java]
+----
+import com.teragrep.poj_01.pool.Pool;
+import com.teragrep.poj_01.pool.PoolableSupplier;
+import com.teragrep.poj_01.pool.UnboundPool;
+
+void example() {
+    final PoolableSupplier<Pool<Poolable>, Poolable> supplier = new PoolableSupplierImpl();
+    final Poolable poolableStub = new PoolableStub();
+
+    try (Pool<Poolable> pool = new UnboundPool<>(supplier, poolableStub)) {
+           try (final Poolable poolable = pool.get()) {
+                // do stuff with poolable
+                // try-with-resources will call close() on poolable, returning it to pool.
+           }
+           // try-with-resources will call close() on pool, deallocating poolable resources and closing the pool.
+    }
+
+
+}
+----
+
 
 == Contributing
 

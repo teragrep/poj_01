@@ -16,16 +16,14 @@
  */
 package com.teragrep.poj_01.pool;
 
-import java.io.IOException;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.function.Supplier;
 
 public class UnboundPool<T extends Poolable> implements Pool<T> {
 
-    private final Supplier<T> supplier;
+    private final PoolableSupplier<Pool<T>, T> poolableSupplier;
 
     private final ConcurrentLinkedQueue<T> queue;
 
@@ -35,8 +33,8 @@ public class UnboundPool<T extends Poolable> implements Pool<T> {
 
     private final AtomicBoolean close;
 
-    public UnboundPool(final Supplier<T> supplier, T stub) {
-        this.supplier = supplier;
+    public UnboundPool(final PoolableSupplier<Pool<T>, T> poolableSupplier, T stub) {
+        this.poolableSupplier = poolableSupplier;
         this.queue = new ConcurrentLinkedQueue<>();
         this.stub = stub;
         this.close = new AtomicBoolean();
@@ -52,7 +50,7 @@ public class UnboundPool<T extends Poolable> implements Pool<T> {
             // get or create
             object = queue.poll();
             if (object == null) {
-                object = supplier.get();
+                object = poolableSupplier.apply(this);
             }
         }
 
@@ -74,16 +72,7 @@ public class UnboundPool<T extends Poolable> implements Pool<T> {
                             break;
                         }
                         else {
-                            try {
-                                pooled.close();
-                            }
-                            catch (IOException ioException) {
-                                System.err
-                                        .println(
-                                                "Exception <" + ioException.getMessage() + "> while closing poolable <"
-                                                        + pooled + ">"
-                                        );
-                            }
+                            poolableSupplier.accept(pooled);
                         }
                     }
                     lock.unlock();
