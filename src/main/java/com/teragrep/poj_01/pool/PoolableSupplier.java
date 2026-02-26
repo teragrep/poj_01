@@ -16,20 +16,8 @@
  */
 package com.teragrep.poj_01.pool;
 
-final class PoolableStub implements CountingPoolable {
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
-    @Override
-    public boolean isStub() {
-        return true;
-    }
-
-    @Override
-    public void close() {
-        throw new UnsupportedOperationException("close() is not provided by PoolableStub");
-    }
-
-    @Override
-    public void increment() {
-        throw new UnsupportedOperationException("increment() is not provided by PoolableStub");
-    }
+public interface PoolableSupplier<T extends Poolable> extends Supplier<T>, Consumer<T>, AutoCloseable {
 }
