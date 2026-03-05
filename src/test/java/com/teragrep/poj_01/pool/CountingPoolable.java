@@ -16,7 +16,9 @@
  */
 package com.teragrep.poj_01.pool;
 
-interface CountingPoolable extends Poolable {
+import java.io.Closeable;
+
+interface CountingPoolable extends Poolable, Closeable {
 
     void increment();
 }

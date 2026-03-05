@@ -16,10 +16,9 @@
  */
 package com.teragrep.poj_01.pool;
 
-import com.teragrep.poj_01.Stubable;
+import com.teragrep.stb_01.Stubable;
 
 import java.io.Closeable;
 
-public interface Poolable extends Stubable, Closeable {
-
+interface Poolable extends Stubable, Closeable {
 }

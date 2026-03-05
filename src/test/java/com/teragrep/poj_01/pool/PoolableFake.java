@@ -16,8 +16,6 @@
  */
 package com.teragrep.poj_01.pool;
 
-import java.io.IOException;
-
 final class PoolableFake implements Poolable {
 
     @Override
@@ -26,7 +24,7 @@ final class PoolableFake implements Poolable {
     }
 
     @Override
-    public void close() throws IOException {
-        // no-op
+    public void close() {
+        //no-op
     }
 }

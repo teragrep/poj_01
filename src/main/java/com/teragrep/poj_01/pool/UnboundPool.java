@@ -16,12 +16,14 @@
  */
 package com.teragrep.poj_01.pool;
 
+import com.teragrep.stb_01.Stubable;
+
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class UnboundPool<T extends Poolable> implements Pool<T> {
+public class UnboundPool<T extends Stubable> implements Pool<T> {
 
     private final PoolableSupplier<Pool<T>, T> poolableSupplier;
 

@@ -44,8 +44,14 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <revision>0.0.1</revision>
     <sha1></sha1>
+    <teragrep.stb_01.version>1.0.0</teragrep.stb_01.version>
   </properties>
   <dependencies>
+    <dependency>
+      <groupId>com.teragrep</groupId>
+      <artifactId>stb_01</artifactId>
+      <version>${teragrep.stb_01.version}</version>
+    </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>

@@ -16,9 +16,11 @@
  */
 package com.teragrep.poj_01.pool;
 
+import com.teragrep.stb_01.Stubable;
+
 import java.util.function.Supplier;
 
-public interface Pool<T extends Poolable> extends AutoCloseable, Supplier<T> {
+public interface Pool<T extends Stubable> extends AutoCloseable, Supplier<T> {
 
     public abstract T get();
 
