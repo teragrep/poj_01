@@ -16,7 +16,9 @@
  */
 package com.teragrep.poj_01.pool;
 
-public final class ReturnablePoolableFake implements Poolable {
+import java.io.Closeable;
+
+final class ReturnablePoolableFake implements Poolable, Closeable {
 
     private final Pool<Poolable> poolRef;
 

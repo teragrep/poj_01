@@ -54,10 +54,8 @@ final class UnboundPoolTest {
 
     @Test
     void testEmptyPool() {
-        final Pool<Poolable> pool = new UnboundPool<>(
-                new PoolableSupplierFake<>((p) -> new PoolableFake(), (p) -> Assertions.assertDoesNotThrow(p::close)),
-                new PoolableStub()
-        );
+        final Pool<Poolable> pool = new UnboundPool<>(new PoolableSupplierFake<>((p) -> new PoolableFake(), (p) -> {
+        }), new PoolableStub());
 
         final Poolable poolable = pool.get();
         pool.offer(poolable);
@@ -78,10 +76,8 @@ final class UnboundPoolTest {
 
     @Test
     void testClosedPool() {
-        final Pool<Poolable> pool = new UnboundPool<>(
-                new PoolableSupplierFake<>((p) -> new PoolableFake(), (p) -> Assertions.assertDoesNotThrow(p::close)),
-                new PoolableStub()
-        );
+        final Pool<Poolable> pool = new UnboundPool<>(new PoolableSupplierFake<>((p) -> new PoolableFake(), (p) -> {
+        }), new PoolableStub());
         pool.close();
 
         final Poolable poolable = pool.get();
