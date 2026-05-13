@@ -21,4 +21,7 @@ import java.util.function.Function;
 
 public interface PoolableSupplier<PoolRef, PoolableType>
         extends Function<PoolRef, PoolableType>, Consumer<PoolableType>, AutoCloseable {
+
+    @Override
+    public abstract void close();
 }
