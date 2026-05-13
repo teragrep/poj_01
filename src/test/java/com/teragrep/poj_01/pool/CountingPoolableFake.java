@@ -16,7 +16,6 @@
  */
 package com.teragrep.poj_01.pool;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -47,7 +46,7 @@ final class CountingPoolableFake implements CountingPoolable {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         int counter = counterList.get(0);
         report.addAndGet(counter);
     }

@@ -22,9 +22,11 @@ import java.util.function.Supplier;
 
 public interface Pool<T extends Stubable> extends AutoCloseable, Supplier<T> {
 
+    @Override
     public abstract T get();
 
     public abstract void offer(T object);
 
+    @Override
     public abstract void close();
 }
